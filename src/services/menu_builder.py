@@ -26,4 +26,26 @@ class MenuBuilder:
 
     # Req 4
     def get_main_menu(self, restriction=None) -> List[Dict]:
-        pass
+        cardapio = []
+
+        for dish in self.menu_data.dishes:
+            # Verifica se o prato atende à restrição alimentar
+            if (
+                restriction is None
+                or restriction not in dish.get_restrictions()
+            ): 
+                 # se tem as coisas pra fazer
+                 if all(
+                    ingredient in self.inventory.inventory
+                    for ingredient in dish.get_ingredients()
+                ):
+                    # add no menu
+                    dish_recipe = {
+                        "dish_name": dish.name,
+                        "ingredients": dish.get_ingredients(),
+                        "price": float(dish.price),
+                        "restrictions": dish.get_restrictions(),
+                    }
+                    cardapio.append(dish_recipe)
+        return cardapio
+                
